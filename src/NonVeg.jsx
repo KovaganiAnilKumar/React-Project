@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "./store";
+import { addToCart, fetchProducts } from "./store";
+import { useEffect } from "react";
 
 function NonVeg()
 {
@@ -7,9 +8,14 @@ function NonVeg()
 
   const dispatch = useDispatch();
 
+  // Fetch products when the component mounts
+  useEffect(() => {
+    dispatch(fetchProducts());
+    }, [dispatch]);
+
   const items = nonVegProducts.map((product,index) =>
                                         (<li key={index}>
-                                            {product.name}  -  ${product.price.toFixed(2)}
+                                            {product.name}  -  ${product.price.toFixed(2)} - <img src={`/images/${product.image}`}  alt={product.name} height={50} width={50} />
                                             <button onClick={()=>dispatch(addToCart(product))}> Add to Cart </button>
                                         </li>)
                           )

@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment, remove } from "./store";
+import { addPurchase, clearCart, decrement, increment, remove } from "./store";
 import { useState } from "react";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Cart()
 {
@@ -10,7 +12,7 @@ function Cart()
 
     const listItems= cartItems.map((item,index) =>
                       (<li key={index}>{item.name} - ${item.price} - 
-                      <button onClick={()=>dispatch(increment(item))}>+</button> 
+                      <button className="btn btn-success" onClick={()=>dispatch(increment(item))}>+</button> 
                       <button onClick={()=>dispatch(decrement(item))}>-</button>
                       Quantity : {item.quantity}
                       <button onClick={()=>dispatch(remove(item))}>Remove</button>
@@ -87,7 +89,19 @@ function Cart()
           // const {total,discountAmount,finalTotal} = calculateTotal();
           const {ftotal,fdiscountAmount,fcoupenDiscountAmount,finfinalTotal} = calculateTotal();
 
-        
+        const handleCompletePurchase = () => {
+                  const {finfinalTotal} = calculateTotal();
+                  const purchaseDate = new Date().toLocaleDateString();
+
+                  const purchaseDetails = {
+                    date : purchaseDate,
+                    items : [...cartItems],
+                    totalAmount: Number(finfinalTotal),
+                  };
+                  dispatch(clearCart());
+
+                  dispatch(addPurchase(purchaseDetails));
+        }
 
     return(
             <> 
@@ -109,6 +123,8 @@ function Cart()
                           <p>Coupen discount Amount : ${fcoupenDiscountAmount}</p>
 
                           <p>Final Amout after discount : ${finfinalTotal}</p>
+
+                          <button onClick={handleCompletePurchase}>Complete purchase</button>
                           
                      </>
                 )}

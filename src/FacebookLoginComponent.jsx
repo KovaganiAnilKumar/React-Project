@@ -17,7 +17,7 @@ function FacebookLoginComponent() {
     <>
       {!isLoggedIn ? (
         <FacebookLogin
-          appId="1075500780966095" // Replace with your actual App ID
+          appId="1716284479212667" // Replace with your actual App ID
           autoLoad={false}
           fields="name,email,picture"
           callback={responseFacebook}
